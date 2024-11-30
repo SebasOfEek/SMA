@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora - Universidad de la Guajira</title>
+<style>
+body {
+    background: url('https://res.cloudinary.com/dkrcpm32u/image/upload/f_webp/v1730608230/image2_wofnmj.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.carousel-container {
+    position: relative;
+    width: 90%;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    scroll-behavior: smooth;
+}
+
+.carousel.smooth-scroll {
+    transition: scroll-left 0.5s ease-in-out; /* Suavidad al desplazarse */
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel .slide:not(.focus) {
+    transform: scale(0.8) translateY(30px); /* Escala y baja */
+}
+
+.carousel .slide.focus {
+    transform: scale(1) translateY(0); /* Slide centrado */
+    z-index: 2;
+}
+
+.carousel .slide {
+    flex: 0 0 100%;
+    max-width: 100%;
+    height: 100%; 
+    scroll-snap-align: center;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    padding-top: 50px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.window-buttons {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.window-buttons .button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.window-buttons .button:nth-child(1) { background-color: #FF5F56; }
+.window-buttons .button:nth-child(2) { background-color: #FFBD2E; }
+.window-buttons .button:nth-child(3) { background-color: #27C93F; }
+
+h1 {
+    color: #FF8C42;
+    margin-bottom: 35px;
+    font-size: 2.2em;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    color: #ffffff;
+    display: block;
+    margin: 20px 0 10px;
+    font-size: 1em;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #BDBDBD;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #FF8C42;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s;
+    margin-top: 30px;
+}
+
+button:disabled {
+    background-color: #BDBDBD;
+    cursor: not-allowed;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+button:hover:enabled {
+    background-color: #E66A00;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.add-button {
+    padding: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20%;
+    background-color: #FF8C42;
+    color: white;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.clear-button {
+    padding: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 20%;
+    background-color: #FF8C42;
+    color: white;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    margin-top: 0px;
+}
+
+.add-button:hover {
+    background-color: #E66A00;
+}
+
+.result {
+    margin-top: 20px;
+    font-weight: bold;
+    color: white;
+    font-size: 1.2em;
+}
+
+.hidden {
+    display: none;
+}
+
+.author {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    font-size: 0.9em;
+    color: white;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instagram-icon {
+    pointer-events: auto;
+    transition: transform 0.3s, opacity 0.3s;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+.instagram-icon img {
+    width: 100%;
+    height: auto;
+    border-radius: 25%;
+    transition: transform 0.3s ease;
+}
+
+.instagram-icon:hover img {
+    transform: scale(1.2); 
+}
+
+.instagram-icon:active img {
+    transform: scale(1.5);
+    opacity: 0.7;
+}
+
+ul {
+    list-style: none;
+    padding: 0; 
+    margin: 0;
+    text-align: left;
+}
+
+ul li {
+    margin-bottom: 10px; 
+}
+
+#connection-status {
+    position: fixed;
+    bottom: 48px;
+    left: 15px;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+#status-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 25%; 
+    background-color: gray;
+    margin-right: 10px;
+}
+
+#status-text {
+    color: white;
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s;
+}
+
+.nav-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.nav-button.left {
+    left: 10px;
+}
+
+.nav-button.right {
+    right: 10px;
+}
+
+@media (max-width: 608px) {
+    #connection-status,
+    .author {
+        bottom: 10px; 
+        left: 10px; 
+    }
+
+    #status-text {
+        font-size: 0.8em;
+    }
+
+    .author {
+        font-size: 0.8em; 
+    }
+    
+    #connection-status {
+        bottom: 39px;
+    }
+    
+    li {
+       font-size: 15px;
+    }
+    
+    h1 {
+       font-size: 28px;
+    }
+    
+    .result, label {
+       font-size: 18px;
+    }
+}
+
+@media (max-width: 428px) {
+    #connection-status,
+    .author {
+        bottom: 10px; 
+        left: 10px;
+    }
+
+    #status-text {
+        font-size: 0.70em;
+    }
+
+    .author {
+        font-size: 0.70em; 
+    }
+    
+    #connection-status {
+        bottom: 39px;
+    }
+    
+    li {
+       font-size: 12px;
+    }
+    
+    h1 {
+       font-size: 25px;
+    }
+    
+    .result, label {
+       font-size: 15px;
+    }
+    
+    .container {
+       margin-bottom: 30px;
+    }
+}
+
+/* Mostrar botones en resoluciones mayores a 1024px */
+@media (min-width: 1024px) {
+    .nav-button {
+        display: flex;
+    }
+}
+</style>
+</head>
+<body>
+
+<div id="connection-status">
+    <div id="status-indicator"></div>
+    <span class="online" id="status-text">Offline</span>
+</div>
+
+    <div class="carousel-container">
+    
+    <button class="nav-button left" id="prevButton">&#8249;</button>
+    <button class="nav-button right" id="nextButton">&#8250;</button>
+    
+        <div class="carousel" id="carousel">
+            
+            <div class="slide hidden" id="updateSlide">
+                <div class="container">
+                    <div class="window-buttons">
+                        <div class="button"></div>
+                        <div class="button"></div>
+                        <div class="button"></div>
+                    </div>
+                    <h1>Actualizaciones</h1>
+                    <ul>
+                    <li>📢 Ahora puedes calcular la nota de la materia de Física.</li>
+                    <li>📢 Registro de actualizaciones ahora disponible para un mejor seguimiento.</li>
+                    <li>📢 Transiciones más fluidas al navegar entre funciones o slides.</li>
+                    <li>📢 El botón de calcular ya funciona en dispositivos iPhone.</li>
+                    <li>📢 La tipografía ha sido optimizada para mayor legibilidad.</li>
+                    <li>📢 Explora todas las opciones disponibles deslizando la pantalla hacia los lados.</li>
+                </ul>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="container">
+                    <div class="window-buttons">
+                        <div class="button"></div>
+                        <div class="button"></div>
+                        <div class="button"></div>
+                    </div>
+                    <h1>Nota Final</h1>
+                    
+                    <label for="firstGrade">Nota Primer Corte (30%):</label>
+                    <div class="button-group">
+                        <input type="text" id="firstGrade" placeholder="Ej: 3.5" min="0" max="5" step="0.1" oninput="validateInputs()" autocomplete="off">
+                        <button class="clear-button hidden" onclick="clearInput('firstGrade')">&#x1F5D1;</button>
+                    </div>
+                    
+                    <label for="secondGrade">Nota Segundo Corte (35%):</label>
+                    <div class="button-group">
+                        <input type="text" id="secondGrade" placeholder="Ej: 4.5" min="0" max="5" step="0.1" oninput="validateInputs()" autocomplete="off">
+                        <button class="clear-button hidden" onclick="clearInput('secondGrade')">&#x1F5D1;</button>
+                    </div>
+                    
+                    <div id="thirdGradeContainer" class="hidden">
+                        <label for="thirdGrade">Nota Tercer Corte (35%):</label>
+                        <div class="button-group">
+                            <input type="text" id="thirdGrade" placeholder="Ej: 5.0" min="0" max="5" step="0.1" oninput="validateInputs()" autocomplete="off">
+                            <button class="clear-button hidden" onclick="clearInput('thirdGrade')">&#x1F5D1;</button>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="calculateButton" onclick="calculateRequiredGrade()" disabled>Calcular</button>
+                        <button id="toggleThirdGrade" class="add-button" onclick="toggleThirdGrade()">+</button>
+                    </div>
+                    
+                    <div class="result" id="result"></div>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="container">
+                    <div class="window-buttons">
+                        <div class="button"></div>
+                        <div class="button"></div>
+                        <div class="button"></div>
+                    </div>
+                    <h1>Calcular Física</h1>
+                    
+                    <label for="theoryGrade">Nota Teoría (70%):</label>
+                    <div class="button-group">
+                        <input type="text" id="theoryGrade" placeholder="Ej: 3.5" min="0" max="5" step="0.1" oninput="validatePhysicsInputs()" autocomplete="off">
+                        <button class="clear-button hidden" onclick="clearInput('theoryGrade')">&#x1F5D1;</button>
+                    </div>
+                    
+                    <label for="labGrade">Nota Laboratorio (30%):</label>
+                    <div class="button-group">
+                        <input type="text" id="labGrade" placeholder="Ej: 4.5" min="0" max="5" step="0.1" oninput="validatePhysicsInputs()" autocomplete="off">
+                        <button class="clear-button hidden" onclick="clearInput('labGrade')">&#x1F5D1;</button>
+                    </div>
+            
+                    <button id="calculatePhysicsButton" onclick="calculatePhysicsGrade()" disabled>Calcular</button>
+                    
+                    <div class="result" id="physicsResult"></div>
+                </div>
+            </div>
+    </div>
+
+    <div class="author">
+        <a href="https://www.instagram.com/xxsebastiannxx/" target="_blank" class="instagram-icon">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+        </a>
+        By SebasOfEek
+    </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('input[type="text"]'); // Selecciona todos los inputs de texto
+
+    inputs.forEach(input => {
+        input.addEventListener('input', () => validateInput(input));
+    });
+});
+
+// Función para validar un solo input y mostrar/ocultar el botón de limpiar
+function validateInput(input) {
+    const clearButton = input.closest('.button-group').querySelector('.clear-button');
+    
+    if (input.value.trim() !== "") {
+        clearButton.classList.remove('hidden');
+    } else {
+        clearButton.classList.add('hidden');
+    }
+
+    checkCalculateButton();
+}
+
+// Función para limpiar el input y ocultar el botón de limpiar
+function clearInput(inputId) {
+    const input = document.getElementById(inputId);
+    input.value = "";
+    input.focus();
+    validateInput(input);
+}
+
+// Habilita o deshabilita el botón "Calcular" según el contenido de los inputs
+function checkCalculateButton() {
+    const firstGrade = document.getElementById('firstGrade').value.trim();
+    const secondGrade = document.getElementById('secondGrade').value.trim();
+    const thirdGradeContainer = document.getElementById('thirdGradeContainer');
+    const thirdGradeInput = document.getElementById('thirdGrade').value.trim();
+
+    const calculateButton = document.getElementById('calculateButton');
+
+    if (firstGrade !== "" && secondGrade !== "" &&
+        (thirdGradeContainer.classList.contains('hidden') || thirdGradeInput !== "")) {
+        calculateButton.disabled = false;
+    } else {
+        calculateButton.disabled = true;
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.getElementById('carousel');
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    if (!carousel || !prevButton || !nextButton) {
+        console.error('Error: Algunos elementos no se encuentran en el DOM');
+        return;
+    }
+
+    nextButton.addEventListener('click', () => {
+        moveCarousel('next');
+    });
+
+    prevButton.addEventListener('click', () => {
+        moveCarousel('prev');
+    });
+
+    function moveCarousel(direction) {
+        const slideWidth = carousel.offsetWidth;
+        const currentScroll = carousel.scrollLeft;
+        const targetScroll = direction === 'next' 
+            ? currentScroll + slideWidth 
+            : currentScroll - slideWidth;
+
+        carousel.classList.add('smooth-scroll');
+        carousel.scrollLeft = targetScroll;
+
+        setTimeout(() => {
+            carousel.classList.remove('smooth-scroll');
+        }, 500);
+    }
+});
+
+
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js').then((registration) => {
+        registration.onupdatefound = () => {
+            const newWorker = registration.installing;
+            newWorker.onstatechange = () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // Notificar al usuario
+                    alert('Nueva versión disponible. Recarga la página para actualizar.');
+                }
+            };
+        };
+    }).catch((error) => {
+        console.error('Error registrando el Service Worker:', error);
+    });
+}
+
+function updateConnectionStatus() {
+    const statusIndicator = document.getElementById('status-indicator');
+    const statusText = document.getElementById('status-text');
+    
+    if (navigator.onLine) {
+        statusIndicator.style.backgroundColor = 'green';
+        statusText.textContent = 'Online';
+    } else {
+        statusIndicator.style.backgroundColor = 'gray';
+        statusText.textContent = 'Offline';
+    }
+}
+
+// Inicializar el estado de conexión
+updateConnectionStatus();
+
+// Escuchar eventos de cambio en la conectividad
+window.addEventListener('online', updateConnectionStatus);
+window.addEventListener('offline', updateConnectionStatus);
+
+const carousel = document.getElementById('carousel');
+const slides = Array.from(document.querySelectorAll('.carousel .slide'));
+
+// Función para actualizar el foco basado en el scroll
+function updateFocus() {
+    const carouselRect = carousel.getBoundingClientRect();
+    slides.forEach((slide) => {
+        const slideRect = slide.getBoundingClientRect();
+        const isCentered =
+            slideRect.left >= carouselRect.left &&
+            slideRect.right <= carouselRect.right;
+
+        if (isCentered) {
+            slide.classList.add('focus');
+        } else {
+            slide.classList.remove('focus');
+        }
+    });
+}
+
+// Actualizar el foco al iniciar la página
+updateFocus();
+
+// Evento para detectar el scroll y actualizar los estilos
+carousel.addEventListener('scroll', () => {
+    requestAnimationFrame(updateFocus);
+});
+
+// Mover al siguiente slide
+function scrollNext() {
+    const scrollAmount = carousel.offsetWidth;
+    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+}
+
+// Mover al slide anterior
+function scrollPrev() {
+    const scrollAmount = carousel.offsetWidth;
+    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+}
+
+// Detectar cambios en el scroll del carrusel
+carousel.addEventListener('scroll', updateButtons);
+
+function toggleMenu() {
+    const menu = document.querySelector('.navbar ul');
+    menu.classList.toggle('show');
+}
+
+// Agregar eventos 'change' y 'input' para mejorar la compatibilidad en iOS
+document.getElementById('firstGrade').addEventListener('input', validateInputs);
+document.getElementById('firstGrade').addEventListener('change', validateInputs);
+
+document.getElementById('secondGrade').addEventListener('input', validateInputs);
+document.getElementById('secondGrade').addEventListener('change', validateInputs);
+
+const thirdGradeInput = document.getElementById('thirdGrade');
+if (thirdGradeInput) {
+    thirdGradeInput.addEventListener('input', validateInputs);
+    thirdGradeInput.addEventListener('change', validateInputs);
+}
+
+function validateInputs() {
+    const firstGradeInput = document.getElementById('firstGrade');
+    const secondGradeInput = document.getElementById('secondGrade');
+    const thirdGradeInput = document.getElementById('thirdGrade');
+    const calculateButton = document.getElementById('calculateButton');
+    const thirdGradeContainer = document.getElementById('thirdGradeContainer');
+
+    limitGrade(firstGradeInput);
+    limitGrade(secondGradeInput);
+    if (!thirdGradeContainer.classList.contains('hidden')) {
+        limitGrade(thirdGradeInput);
+    }
+
+    // Validar que los valores sean numéricos
+    const firstValue = parseFloat(firstGradeInput.value);
+    const secondValue = parseFloat(secondGradeInput.value);
+    const thirdValue = thirdGradeContainer.classList.contains('hidden') ? null : parseFloat(thirdGradeInput.value);
+
+    if (thirdGradeContainer.classList.contains('hidden')) {
+        calculateButton.disabled = !(isFinite(firstValue) && isFinite(secondValue));
+    } else {
+        calculateButton.disabled = !(isFinite(firstValue) && isFinite(secondValue) && isFinite(thirdValue));
+    }
+}
+
+function limitGrade(inputElement) {
+    let value = inputElement.value;
+
+    // Reemplazar comas con puntos para uniformidad
+    value = value.replace(/,/g, '.');
+
+    // Validar que sea un número válido entre 0 y 5 con máximo un decimal
+    const regex = /^([0-4](\.\d{0,2})?|5(\.0{0,2})?)$/;
+
+    if (!regex.test(value)) {
+        // Si el valor no cumple, eliminar caracteres inválidos
+        const sanitizedValue = value
+            .replace(/[^0-9.]/g, '') // Eliminar caracteres no numéricos excepto el punto
+            .split('.'); // Dividir en caso de múltiples puntos
+
+        // Conservar solo la primera parte y el primer decimal válido
+        value = sanitizedValue[0] + (sanitizedValue[1] ? '.' + sanitizedValue[1].slice(0, 2) : '');
+    }
+
+    // Validar rango entre 0 y 5
+    const numericValue = parseFloat(value);
+    if (numericValue > 5 || numericValue < 0) {
+        value = numericValue > 5 ? '5' : '0';
+    }
+
+    // Actualizar el valor del input
+    inputElement.value = value;
+}
+
+
+function toggleThirdGrade() {
+    const thirdGradeContainer = document.getElementById('thirdGradeContainer');
+    const toggleButton = document.getElementById('toggleThirdGrade');
+    const resultElement = document.getElementById('result'); // Obtener el elemento del resultado
+
+    if (thirdGradeContainer.classList.contains('hidden')) {
+        // Mostrar el tercer corte y cambiar el botón a "-"
+        thirdGradeContainer.classList.remove('hidden');
+        toggleButton.textContent = "-";
+    } else {
+        // Ocultar el tercer corte, limpiar su valor y cambiar el botón a "+"
+        thirdGradeContainer.classList.add('hidden');
+        document.getElementById('thirdGrade').value = '';
+        toggleButton.textContent = "+";
+    }
+
+    // Reiniciar el resultado cada vez que se cambie el estado del tercer corte
+    resultElement.innerText = '';
+
+    // Validar los inputs nuevamente
+    validateInputs();
+}
+
+function calculateRequiredGrade() {
+    const firstGrade = parseFloat(document.getElementById('firstGrade').value) || 0;
+    const secondGrade = parseFloat(document.getElementById('secondGrade').value) || 0;
+    const thirdGradeInput = document.getElementById('thirdGrade');
+    const thirdGrade = thirdGradeInput && thirdGradeInput.value ? parseFloat(thirdGradeInput.value) : null;
+
+    const firstWeight = 0.3;
+    const secondWeight = 0.35;
+    const thirdWeight = 0.35;
+    
+    const resultElement = document.getElementById('result');
+    
+    if (thirdGrade !== null) {
+        const finalGrade = (firstGrade * firstWeight + secondGrade * secondWeight + thirdGrade * thirdWeight).toFixed(2);
+        resultElement.innerText = `Nota final acumulada: ${finalGrade}`;
+    } else {
+        const requiredGrade = ((3 - (firstGrade * firstWeight + secondGrade * secondWeight)) / thirdWeight);
+        
+        if (requiredGrade < 0) {
+            const finalGrade = (firstGrade * firstWeight + secondGrade * secondWeight).toFixed(2);
+            resultElement.innerText = `Ya tienes un puntaje acumulado de ${finalGrade}, sin necesidad de más puntos en el tercer corte.`;
+        } else if (requiredGrade <= 5) {
+            resultElement.innerText = `Necesitas sacar al menos ${requiredGrade.toFixed(2)} en el tercer corte para aprobar con 3.0`;
+        } else {
+            resultElement.innerText = `No es posible alcanzar una nota final de 3.0 con estas notas en los dos primeros cortes.`;
+        }
+    }
+}
+
+function validatePhysicsInputs() {
+    const theoryInput = document.getElementById('theoryGrade');
+    const labInput = document.getElementById('labGrade');
+    const calculateButton = document.getElementById('calculatePhysicsButton');
+
+    // Limitar valores entre 0 y 5
+    limitGrade(theoryInput);
+    limitGrade(labInput);
+
+    // Habilitar el botón solo si ambos campos tienen valores
+    calculateButton.disabled = !(theoryInput.value && labInput.value);
+}
+
+function calculatePhysicsGrade() {
+    const theoryGrade = parseFloat(document.getElementById('theoryGrade').value) || 0;
+    const labGrade = parseFloat(document.getElementById('labGrade').value) || 0;
+
+    const finalGrade = (theoryGrade * 0.7 + labGrade * 0.3).toFixed(2);
+
+    const resultElement = document.getElementById('physicsResult');
+    resultElement.innerText = `Tu nota final es: ${finalGrade}`;
+}
+</script>
+
+</body>
+</html>

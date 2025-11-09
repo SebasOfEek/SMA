@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="shortcut icon" href="/smaudg/vista/img/favicon.ico"/>
+<link type="text/css" href="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/themes/ui-lightness/jquery.ui.all.css" rel="stylesheet" /><link type="text/css" href="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/demos/demos.css" rel="stylesheet" /><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/jquery-1.4.4.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.core.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.widget.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.button.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.mouse.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.position.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/external/jquery.bgiframe-2.1.1.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.draggable.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.resizable.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.dialog.js"></script><script type="text/javascript" src="/smaudg/vista/script/jquery-ui-1.8.7.custom/development-bundle/ui/jquery.ui.dialog.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="/smaudg/vista/css/styleinit.css" rel="stylesheet" type="text/css" media="all" />
+<script type="text/javascript" src="/smaudg/vista/js/jquery/1.10/teclado.js"></script>
+<!--Estilos Teclado  Virtual-->
+<style type="text/css"> 
+    .ui-keyboard{ padding: .3em; position: absolute; top:35%; left:20%; z-index: 16000;} 
+    .ui-keyboard-button{height: 2em; width: 2em; margin: .1em; } 
+    .ui-keyboard-actionkey{width: 5em; } 
+    .ui-keyboard-space{width: 15em;} 
+    .ui-keyboard-preview{width: 100%; text-align: left;} 
+</style> 
+
+<!--[if IE 6]>
+<link href="ie6fix.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<script language="JavaScript" type="text/JavaScript" src="/smaudg/vista/script/Funciones.js"></script>
+
+<SCRIPT language="javascript" TYPE="text/javascript">
+setPath('/smaudg');
+            nullMouse();
+$(function () {
+
+	$( "#menu li" ).hover(function() {
+	  $( this ).addClass( "active" );
+	},
+	function() {
+	  $( this ).removeClass( "active" );
+	});
+	$('input[type=password]').keyboard({
+	layout: "qwerty"
+	});
+	$('input[type=password]').attr('readonly', false);
+    	checkIndex();
+
+	});
+function validLogin()
+{   
+    var formLogin = $('#formLogin').serialize();
+    var w = screen.availWidth - 7; 
+    var h = screen.availHeight - 45;		    
+    document.formLogin.submit();
+    /*showWindowWait(w,h,'yes','CARGANDO... ESPERE POR FAVOR','/smaudg/servlet/Valid/Login','?' + formLogin,true,'INIT_UIC',true);	            
+    get('pswprs').value = '';
+    $('#modal_login').dialog('close');*/
+} 
+
+function capturarDatos(){
+	
+	/*funcion que  ejecuta la misma funcion cuando se da click en aceptar del teclado*/
+	do_stuff();
+	/**/
+	validLogin();
+	
+}
+
+function  loadManuales(){  
+window.open('http://www.uniguajira.edu.co/tutoriales-sma-tutoriales','_blank');
+}
+
+var lista  = new Array('/smaudg/vista/img/imginit/banner1.jpg',
+                       '/smaudg/vista/img/imginit/banner2.jpg',
+                       '/smaudg/vista/img/imginit/banner3.jpg');
+                      
+var lista2 = new Array('/smaudg/vista/img/imginit/banner4.jpg',
+       				   '/smaudg/vista/img/imginit/banner5.jpg',
+					   '/smaudg/vista/img/imginit/banner6.jpg');                     
+var contador = 0;
+var tiempo = 0;
+var tempor = null;
+
+function changeImg()
+{
+	$("#codprs").focus();
+   //setTimeout("cambio(1)", 2000);
+   setInterval("cambio(1)", 2000);   
+}
+
+function cambio(sen)
+{
+	contador+= sen;
+	
+	if (contador == lista.length) 
+	     contador = -1;
+	else 
+	{
+	     //$('#imgRandom').hide('slow');
+	     //document.images.imgRandom.src = lista[contador]
+	     $('#imgRandom').attr('src',lista[contador]);
+	     $('#imgJef').attr('src',lista2[contador]);
+	     //$('#imgRandom').show('slow');
+	}     
+	     
+	window.status="Imagen número "+contador
+}
+
+function forgetPassword_old(){
+	conf_form(600,400,'modal_forgpass','',false,false);
+	$("#modal_forgpass").dialog({ show: {effect: "blind", duration: 1000} });		  
+	$('#modal_forgpass').dialog('open');				
+	$('#iframe_forgpass').attr('src', '/smaudg/vista/formForgetPasswordNew.jsp?title=AUTENTICACION DE USUARIO');					
+}
+
+function forgetPassword(){
+	$('#iframe_reset').attr('src', Rutav+"/vista/Sma/security/formResetPassword.jsp");
+	$('#iframe_reset').attr('width',"700");
+	$('#iframe_reset').attr('height',"400");
+	conf_form(800,600,'panelReset','',false,false);
+	$('#iframe_reset').contents().find('button.ui-dialog-titlebar-close').remove();
+	$('#panelReset').dialog('open');	
+}
+
+function checkIndex()
+{
+    var imageUrl = Rutav + "/vista/img/multilogos.jpg";
+    var isInIFrame = (window.location != window.parent.location);
+    if (isInIFrame == true) {
+        $("body").html('');
+        $("body").css('background-image', imageUrl);
+        $('.container').html('');
+        $('#footer').html('');
+        
+        show_message("La sessión ha expirado, por favor ingrese de nuevo a la aplicación", "window.top.location.href='"+Rutav+"/vista/init.jsp'",'INFO');
+    }
+
+
+} 
+   
+</script>
+
+</head>
+
+
+
+<body class="homepage" onload="changeImg()">
+<script type="text/javascript">printInactiveArea();printMessage();</script>
+	<div id="modal_forgpass" title="OLVIDO SU CONTRASEÑA" style="display: none" >
+		<iframe id="iframe_forgpass" src="" width="950" height="500" frameborder="0"></iframe>		
+	</div>
+	
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="header" class="container">
+	<tr valign="top">
+		<td width="300">&nbsp;</td>
+		<td><div id="menu" >
+				<ul>
+					<li class="active"><a href="/smaudg/servlet/Valid/Login?logout=Out" accesskey="1" title=""><span>Inicio</span></a></li>
+					<li  ><a href="/smaudg/servlet/Valid/LoginExternal?logout=In&tpoLogin=OFR&nextPage=/vista/initOffers.jsp" accesskey="2" title=""><span>Convocatorias</span></a></li>
+					<li  ><a  accesskey="6" onclick="loadManuales()" title="Video-tutoriales para ayudarlo en todo momento" style="cursor:pointer"><span>Tutoriales</span></a></li>
+					<li  ><a  accesskey="6" href="/smaudg/vista/formGraduates.jsp"  title="Actualizar egresados" style="cursor:pointer"><span>Egresados</span></a></li>
+                    			<li style="display:none" > <a href="#" accesskey="3" title=""><span>Egresados</span></a></li>
+					<li style="display:none"><a href="#" accesskey="4" title=""><span>Campus</span></a></li>
+					<li style="display:none" ><a href="#" accesskey="5" title=""><span>Cont&aacute;ctenos</span></a></li>					
+				</ul>
+			</div></td>
+	</tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="page" class="container">
+	<tr>
+		<td><table width="100%" border="0" cellspacing="0" cellpadding="0" id="page-bgtop">
+				<tr>
+					<td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td id="page-bgbtm"><div id="content">
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td><div id="banner">
+														<div class="image"><img src="/smaudg/vista/img/imginit/banner.png" width="671" height="225" alt="" id="imgRandom" name="imgRandom" /></div>
+														<div class="caption1">
+															<p>Shikii Ekirajia Pulee Wajira</p>
+															<h2>Universidad de la Guajira</h2>														</div>
+														<div class="border"></div>
+													</div></td>
+											</tr>
+										</table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td colspan="3"><div class="box-style2" id="box3">
+														<h2 class="title">Software de Manejo Avanzado</h2>
+														<p class="byline">Campus virtual</p>
+														<div class="content" style="display:none">
+															<div  class="image-style3 image-style3a"><img id="imgJef" src="/smaudg/vista/img/imginit/banner0.jpg" width="168" height="146" alt="" /><span></span></div>
+															<strong style="color:maroon">Misi&oacute;n</strong>
+															<p>
+																La Universidad de La Guajira, como institución de Educación superior estatal de mayor cobertura en el departamento, se nutre de diferentes campos de la ciencia y la tecnología; forma profesionales que perciben, aprenden, aplican y transforman los saberes y la cultura a través de las funciones que le son propias: el desarrollo y la difusión de la Ciencia y la Tecnología y la formación de científicos; el fomento y el desarrollo de la actividad económica y la formación de emprendedores; el desarrollo y la transmisión de la cultura; la profesionalización y el compromiso social; con una organización académico-administrativa soportada en procedimientos que la dinamizan para proyectarse hacia el entorno. 
+														
+															</p>
+															
+														</div>
+												</div></td>
+											</tr>
+											<tr>
+											<td colspan="3">
+	                                        	<p></p>										    
+											</td>
+											</tr>
+											<tr>
+											<td colspan="3">
+	                                        	<p></p>										    
+											</td>
+											</tr>
+											<tr>
+											<td width="300">
+											</td>
+											<td valign="top">
+	                                        	<!--p align="center"><a href="#" class="button-style1" style="position: relative;top: 0px"><span>Ver Mas...</span></a> </p-->
+	 	                                    </td>
+	 	                                    <td>
+	 	                                    <!--img src="/smaudg/vista/img/UIC.png"   style="position: relative;top: 0px; align:center" /-->
+	 	                                    </td>
+											</tr>
+										</table>
+									</div>
+									<div id="sidebar">
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td><div id="box1" class="box-style1">
+														<h2 class="title">Ingresar al sistema</h2>
+														
+														<div class="content">
+															<div class="image-style1 image-style1a">
+															   <form method="post" name="formLogin"  id="formLogin" action="/smaudg/servlet/Valid/Login">
+															        <ul class="style2">
+															          <li>
+																        <div style="position: absolute;top: 4px;left: 4px;vertical-align: bottom;display:none">
+																          Escuela:
+																        </div>
+																		<div style="position: absolute;top: 4px;left: 80px;display:none">
+																		  <select name='codcia'  class='combo' id='codcia' title='Usuario'  >
+  <option value='UDG'  style = 'background-color: #FFFFFF' >UdeG</option>
+</select> 																		  
+																		</div>
+															          </li>
+															          <li>
+																        <div style="position: absolute;top: 30px;left: 4px;vertical-align: bottom;" align="right">
+																          C&oacute;digo:
+																        </div>
+																		<div style="position: absolute;top: 30px;left: 80px;">
+																		  <input type="text" name="codprs" id="codprs" class="text" value="" style="height: 18px; width: 94px">
+																	    </div>
+															          </li>
+															          <li>
+																        <div style="position: absolute;top: 56px;left: 4px;vertical-align: bottom;" align="right">
+																          Contrase&ntilde;a:
+																        </div>
+																		<div style="position: absolute;top: 56px;left: 80px;">
+																		  <input type="password" name="pswprs" id="pswprs" class="text" value="" style="width: 95px; height: 18px" onkeypress="if (event.keyCode == 13) capturarDatos()"><input type="button" name="btnLogin" value="Login" onClick="validLogin()"/>
+																	    </div>
+															          </li>
+															        </ul>
+															        <input name="logout" type="hidden" id="logout" value="In">
+															        
+															     </form>
+															</div>
+															<a href="#" onclick="forgetPassword()"> Recuperar mi contrase&ntilde;a</a>
+														</div>
+														
+														<div class="bgbtm"></div>
+													</div></td>
+											</tr>
+										</table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td><div id="box2" class="box-style1">
+														<h2 class="title">Seccionales</h2>
+														<div class="content" class="style2" style="font-family: Arial, Helvetica, sans-serif;color:#6A6A6A;">
+															<ul style="display:none" >
+																<li>
+																	<h3>Universidad de la Guajira <br>"Acad&eacute;mia y Proyecci&oacute;n Social"</h3>
+																	<p></p>
+																</li>
+																<li>
+																	Riohacha - La Guajira - Colombia
+																</li>
+																<li>
+																	<p></p>
+																</li>
+																<li>
+																	<p></p>
+																</li>
+																<li>
+																	<p></p>
+																</li>
+																<li>
+																	<p></p>
+																</li>
+
+																
+
+															</ul>
+															<h3></h3>
+															<!--p style="text-align:justify" style="display:none">Horario de Atención: Lunes a Viernes: 8:00 A.M - 12:00 P.M & 3:00 P.M - 7:00 P.M</p-->
+														</div>
+														<div class="bgbtm"></div>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+	<div align="center" id="panelReset">
+		<iframe id="iframe_reset" src=""
+			frameborder="0" scrolling="no"></iframe>
+	</div>
+	
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="footer">
+	<tr>
+	    <td valign="top">
+		      <p>(c) 2014 CL SMA LTDA. All rights reserved. </p>
+		</td>
+	</tr>
+
+</table>
+</body>
+</html>
